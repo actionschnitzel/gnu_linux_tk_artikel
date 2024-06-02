@@ -1,4 +1,4 @@
-print("Jutta hat doppelt soviele Eier wie Achim. Er hat besitzt genau 6 Eier. Jutta schenkt Achim die helfter ihrer Eier.\n\nFrage: Wieviele Eier hat Achim?")
+print("Jutta hat doppelt soviele Eier wie Achim. Er besitzt genau 6 Eier. Jutta schenkt Achim die Hälfte ihrer Eier.\n\nFrage: Wieviele Eier hat Achim?")
 
 achims_eier = 6
 
@@ -13,5 +13,5 @@ print("\nLösung:\n")
 #print(f"Achim hat {achims_eier} {check_plural}")
 #print(f"Jutta hat {juttas_eier} {check_plural}")
 
-print(f"Achim hat die Helfte von Juttas {juttas_eier} Eiern bekommen.\nEs sind genau {juttas_eier / 2 } {check_plural}.\nDas heißt, Achim hat jetzt {achims_eier + juttas_eier / 2} {check_plural}.")
+print(f"Achim hat die Hälfte von Juttas {juttas_eier} Eiern bekommen.\nEs sind genau {juttas_eier / 2 } {check_plural}.\nDas heißt, Achim hat jetzt {achims_eier + juttas_eier / 2} {check_plural}.")
 
