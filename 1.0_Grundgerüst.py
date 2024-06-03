@@ -1,4 +1,3 @@
-from tkinter import *
 import tkinter as tk
 
 # Erstelle das Hauptfenster
