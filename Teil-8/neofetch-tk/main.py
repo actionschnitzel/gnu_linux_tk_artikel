@@ -57,7 +57,7 @@ def get_distro_logo():
         distro_icon.configure(image=debian_logo)
     elif distro_id == "arch":
         distro_icon.configure(image=arch_logo)        
-    elif distro_id == "mint":
+    elif distro_id == "linuxmint":
         distro_icon.configure(image=mint_logo)
     elif distro_id == "ubuntu":
         distro_icon.configure(image=ubuntu_logo)
