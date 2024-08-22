@@ -9,7 +9,6 @@ import distro
 import platform
 import psutil
 import datetime
-import distro
 
 
 # Macht die RAM-Größe lesbar
@@ -66,7 +65,10 @@ def get_distro_logo():
     elif distro_id == "fedora":
         distro_icon.configure(image=fedora_logo)
     else:
-        distro_icon.configure(image=distro_logo)
+       distro_icon.configure(image=distro_logo)
+
+
+
 
 # Vars für die Labels
 # Ließt den User aus
