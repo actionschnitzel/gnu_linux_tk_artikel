@@ -12,9 +12,8 @@ import subprocess
 
 
 def get_desktop_environment():
-    xdg_current_desktop = os.environ.get("XDG_CURRENT_DESKTOP").lower()
-    #print(xdg_current_desktop)
-    # Check for specific desktop environments
+    xdg_current_desktop = os.environ.get("XDG_CURRENT_DESKTOP","").lower()
+
     if xdg_current_desktop == "x-cinnamon" or xdg_current_desktop == "cinnamon":
         return "CINNAMON"
     elif xdg_current_desktop == "unity":
@@ -27,7 +26,7 @@ def get_desktop_environment():
         return "KDE"
     elif "xfce" == xdg_current_desktop:
         return "XFCE"
-    elif "lxde-pi-wayfire" == xdg_current_desktop:
+    elif os.environ.get("DESKTOP_SESSION", "").lower() == "lxde-pi-wayfire":
         return "PI-WAYFIRE"
     elif "mate" == xdg_current_desktop:
         return "MATE"
@@ -54,7 +53,10 @@ def get_desktop_theme():
         result = subprocess.run(['xfconf-query', '-c', 'xsettings', '-p','/Net/ThemeName'],capture_output=True,text=True, check=True
         )
         return result.stdout.strip().strip("'")
-
+    if get_desktop_environment() == "PI-WAYFIRE":
+        result = subprocess.run(['gsettings', 'get', 'org.gnome.desktop.interface', 'gtk-theme'],capture_output=True,text=True, check=True
+        )
+        return result.stdout.strip().strip("'")
 
 
 # Ließt den Window-Manager aus
