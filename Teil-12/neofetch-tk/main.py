@@ -32,6 +32,20 @@ def get_desktop_environment():
         return "MATE"
     else:
         return "Unknown"
+
+
+def get_kde_theme():
+    file_path = os.path.expanduser("~/.config/kdeglobals")
+
+    with open(file_path, 'r') as file:
+        for line in file:
+            if line.startswith("LookAndFeelPackage="):
+                look_and_feel = line.strip().split("=")[-1]
+                
+                if look_and_feel.startswith("org.kde."):
+                    look_and_feel = look_and_feel.replace("org.kde.", "")
+                return look_and_feel
+
 # Ließt das DE-Theme aus
 def get_desktop_theme():
     
@@ -40,32 +54,29 @@ def get_desktop_theme():
         )
         return result.stdout.strip().strip("'")
     
-    elif get_desktop_environment() == "CINNAMON":
+    if get_desktop_environment() == "CINNAMON":
         result = subprocess.run(['gsettings', 'get', 'org.cinnamon.desktop.interface', 'gtk-theme'],capture_output=True,text=True, check=True
         )
         return result.stdout.strip().strip("'")        
 
-    elif get_desktop_environment() == "MATE":
+    if get_desktop_environment() == "MATE":
         result = subprocess.run(['gsettings', 'get', 'org.mate.interface', 'gtk-theme'],capture_output=True,text=True, check=True
         )
-        return result.stdout.strip().strip("'")  
-    elif get_desktop_environment() == "XFCE":
+        return result.stdout.strip().strip("'")
+    
+    if get_desktop_environment() == "XFCE":
         result = subprocess.run(['xfconf-query', '-c', 'xsettings', '-p','/Net/ThemeName'],capture_output=True,text=True, check=True
         )
         return result.stdout.strip().strip("'")
-    elif get_desktop_environment() == "PI-WAYFIRE":
+    
+    if get_desktop_environment() == "PI-WAYFIRE":
         result = subprocess.run(['gsettings', 'get', 'org.gnome.desktop.interface', 'gtk-theme'],capture_output=True,text=True, check=True
         )
         return result.stdout.strip().strip("'")
-    elif desktop_env == "KDE":
-            # KDE theme is stored in ~/.config/kdeglobals under the [Theme] or [General] sections
-            kdeglobals_path = os.path.expanduser("~/.config/kdeglobals")
-            if os.path.exists(kdeglobals_path):
-                with open(kdeglobals_path, 'r') as file:
-                    for line in file:
-                        if "Theme=" in line or "Name=" in line:
-                            return line.split('=')[1].strip()
-            return "KDE theme not found."
+    
+    if get_desktop_environment() == "KDE":
+        return get_kde_theme()
+        
 
 # Ließt den Window-Manager aus
 def get_window_manager_name():
@@ -221,14 +232,13 @@ res_label.pack(anchor=tk.NW)
 de_label = tk.Label(stat_frame,text=f"DE: {get_desktop_environment()}",background="#FFFFFF",font=("Sans",14))
 de_label.pack(anchor=tk.NW)
 
-# Label mit Text Window-Manager:
+# Label mit Text Window-Manager
 wm_label = tk.Label(stat_frame,text=f"WM: {get_window_manager_name()}",background="#FFFFFF",font=("Sans",14))
 wm_label.pack(anchor=tk.NW)
 
+# Label mit Text Theme
 wm_theme_label = tk.Label(stat_frame,text=f"Theme: {get_desktop_theme()}",background="#FFFFFF",font=("Sans",14))
 wm_theme_label.pack(anchor=tk.NW)
-
-
 
 # Label mit Text CPU:
 cpu_label = tk.Label(stat_frame,text=f"CPU: ({cpu_core_count}) @ {cpu_freq.max:.2f} Mhz",background="#FFFFFF",font=("Sans",14))
