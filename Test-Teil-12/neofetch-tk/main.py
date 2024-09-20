@@ -10,7 +10,7 @@ import psutil
 import datetime
 import subprocess
 
-
+# Ließt den Desktop aus
 def get_desktop_environment():
     xdg_current_desktop = os.environ.get("XDG_CURRENT_DESKTOP","").lower()
 
@@ -32,7 +32,7 @@ def get_desktop_environment():
         return "MATE"
     else:
         return "Unknown"
-
+# Ließt das DE-Theme aus
 def get_desktop_theme():
     
     if get_desktop_environment() == "GNOME":
@@ -40,24 +40,32 @@ def get_desktop_theme():
         )
         return result.stdout.strip().strip("'")
     
-    if get_desktop_environment() == "CINNAMON":
+    elif get_desktop_environment() == "CINNAMON":
         result = subprocess.run(['gsettings', 'get', 'org.cinnamon.desktop.interface', 'gtk-theme'],capture_output=True,text=True, check=True
         )
         return result.stdout.strip().strip("'")        
 
-    if get_desktop_environment() == "MATE":
+    elif get_desktop_environment() == "MATE":
         result = subprocess.run(['gsettings', 'get', 'org.mate.interface', 'gtk-theme'],capture_output=True,text=True, check=True
         )
         return result.stdout.strip().strip("'")  
-    if get_desktop_environment() == "XFCE":
+    elif get_desktop_environment() == "XFCE":
         result = subprocess.run(['xfconf-query', '-c', 'xsettings', '-p','/Net/ThemeName'],capture_output=True,text=True, check=True
         )
         return result.stdout.strip().strip("'")
-    if get_desktop_environment() == "PI-WAYFIRE":
+    elif get_desktop_environment() == "PI-WAYFIRE":
         result = subprocess.run(['gsettings', 'get', 'org.gnome.desktop.interface', 'gtk-theme'],capture_output=True,text=True, check=True
         )
         return result.stdout.strip().strip("'")
-
+    elif desktop_env == "KDE":
+            # KDE theme is stored in ~/.config/kdeglobals under the [Theme] or [General] sections
+            kdeglobals_path = os.path.expanduser("~/.config/kdeglobals")
+            if os.path.exists(kdeglobals_path):
+                with open(kdeglobals_path, 'r') as file:
+                    for line in file:
+                        if "Theme=" in line or "Name=" in line:
+                            return line.split('=')[1].strip()
+            return "KDE theme not found."
 
 # Ließt den Window-Manager aus
 def get_window_manager_name():
