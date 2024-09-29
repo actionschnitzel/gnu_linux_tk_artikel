@@ -46,6 +46,24 @@ def get_kde_theme():
                     look_and_feel = look_and_feel.replace("org.kde.", "")
                 return look_and_feel
 
+def get_kde_theme_new():
+   
+        result = subprocess.run(['plasmashell', '--version'],capture_output=True,text=True, check=True
+        )
+        plasma_version = result.stdout.strip()
+        
+        if "plasmashell 5." in plasma_version:
+            result = subprocess.run(['kreadconfig5', '--file', '~/.config/kdeglobals', '--group', 'KDE', '--key', 'LookAndFeelPackage'],stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)          
+            output = result.stdout.strip()
+            return output
+        
+        if "plasmashell 6." in plasma_version:
+            result = subprocess.run(['kreadconfig6', '--file', '~/.config/kdeglobals', '--group', 'KDE', '--key', 'LookAndFeelPackage'],stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) 
+            output = result.stdout.strip()
+            return output
+        
+#print(get_kde_theme_new())
+
 # Ließt das DE-Theme aus
 def get_desktop_theme():
     
