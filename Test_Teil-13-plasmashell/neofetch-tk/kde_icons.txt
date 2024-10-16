@@ -1,0 +1,2 @@
+ 
+kreadconfig5 --file ~/.config/kdeglobals --group Icons --key Theme
